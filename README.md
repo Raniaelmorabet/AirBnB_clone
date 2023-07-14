@@ -1,6 +1,5 @@
 # AirBnB clone - The console
-![img_1.png](img_1.png)
-
+![img.png](img.png)
 AirBnB Clone - The Console is a command-line interface (CLI) tool that provides a simplified way to manage and interact with the AirBnB clone application. *
 With the console, users can create, read, update, and delete information from the application's database.
 
