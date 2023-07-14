@@ -1,5 +1,6 @@
 # AirBnB clone - The console
 ![img.png](img.png)
+
 AirBnB Clone - The Console is a command-line interface (CLI) tool that provides a simplified way to manage and interact with the AirBnB clone application. *
 With the console, users can create, read, update, and delete information from the application's database.
 
@@ -63,7 +64,7 @@ With its user-friendly interface and powerful features, it has become a popular 
 * [intranet 4](https://intranet.alxswe.com/rltoken/1d8I3jSKgnYAtA1IZfEDpA)
 * [intranet 5](https://intranet.alxswe.com/rltoken/IlFiMB8UmqBG2CxA0AD3jA)
 * [intranet 6](https://intranet.alxswe.com/rltoken/C_a0EKbtvKdMcwIAuSIZng)
- 
+ -----------------------------------------------------------------------------------------------------------------------
 # Python Scripts
  * Allowed editors: vi, vim, emacs
   * All your files will be interpreted/compiled on Ubuntu 20.04 LTS using python3 (version 3.8.5)
@@ -77,6 +78,7 @@ With its user-friendly interface and powerful features, it has become a popular 
  * All your classes should have a documentation (python3 -c 'print(__import__("my_module").MyClass.__doc__)')
  * All your functions (inside and outside a class) should have a documentation (python3 -c 'print(__import__("my_module").my_function.__doc__)' and python3 -c 'print(__import__("my_module").MyClass.my_function.__doc__)')
  * A documentation is not a simple word, it’s a real sentence explaining what’s the purpose of the module, class or method (the length of it will be verified)
+--------------------------------------------------------------------------------------------------------------------------------
 ## Python Unit Tests
  * Allowed editors: vi, vim, emacs
  * All your files should end with a new line
@@ -93,3 +95,9 @@ With its user-friendly interface and powerful features, it has become a popular 
  * All your classes should have a documentation (python3 -c 'print(__import__("my_module").MyClass.__doc__)')
 *  All your functions (inside and outside a class) should have a documentation (python3 -c 'print(__import__("my_module").my_function.__doc__)' and python3 -c 'print(__import__("my_module").MyClass.my_function.__doc__)')
   We strongly encourage you to work together on test cases, so that you don’t miss any edge case
+-----------------------------------------------------------------------------------------------------------------------------------------------
+## AUTHORS
+---------------------------------------------------------------------------------------------------------------------
+* [ACHRAF EL KHNISSI](achraf.elkhnissi@gmail.com)
+
+* [RANIA EL MORABET](raniaelmorabet9@gmail.com)
