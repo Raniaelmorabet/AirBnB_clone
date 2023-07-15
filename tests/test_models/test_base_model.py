@@ -92,6 +92,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertTrue(isinstance(self.bm1.updated_at, datetime))
         self.assertTrue(isinstance(self.bm2.updated_at, datetime))
 
+    # --- Testing str method --- #
     def test_base_model_str(self):
         """Test __str__ method in BaseModel class"""
         self.assertEqual(str(self.bm1), "[BaseModel] ({}) {}".
