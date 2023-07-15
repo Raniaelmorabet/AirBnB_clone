@@ -2,7 +2,7 @@
 
 """This module defines a base class for all models in our hbnb clone"""
 
-from models import storage
+# from models import storage
 import uuid
 from datetime import datetime
 import models
