@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+""" This is a file storage that serializes an instance to a JSON file (JSON.dump)
+    It also deserializes a JSON file to an instance (JSON.load)
+"""
 import json
 
 
