@@ -99,3 +99,78 @@ class TestBaseModel(unittest.TestCase):
                          format(self.bm1.id, self.bm1.__dict__))
         self.assertEqual(str(self.bm2), "[BaseModel] ({}) {}".
                          format(self.bm2.id, self.bm2.__dict__))
+
+    # --- Testing to_dict method --- #
+    def test_base_model_to_dict(self):
+        """Test to_dict method in BaseModel class"""
+        self.assertTrue(hasattr(self.bm1, "to_dict"))
+        self.assertTrue(hasattr(self.bm2, "to_dict"))
+        self.assertTrue(isinstance(self.bm1.to_dict(), dict))
+        self.assertTrue(isinstance(self.bm2.to_dict(), dict))
+        self.assertEqual(type(self.bm1.to_dict()), dict)
+        self.assertEqual(type(self.bm2.to_dict()), dict)
+
+    def test_base_model_to_dict_attributes(self):
+        """Test to_dict method attributes in BaseModel class"""
+        self.assertIn("id", self.bm1.to_dict())
+        self.assertIn("created_at", self.bm1.to_dict())
+        self.assertIn("updated_at", self.bm1.to_dict())
+        self.assertIn("__class__", self.bm1.to_dict())
+
+        self.assertIn("id", self.bm2.to_dict())
+        self.assertIn("created_at", self.bm2.to_dict())
+        self.assertIn("updated_at", self.bm2.to_dict())
+        self.assertIn("__class__", self.bm2.to_dict())
+
+    def test_base_model_to_dict_values(self):
+        """Test to_dict method values in BaseModel class"""
+        self.assertEqual(self.bm1.to_dict()["__class__"], "BaseModel")
+        self.assertEqual(self.bm2.to_dict()["__class__"], "BaseModel")
+
+        self.assertEqual(self.bm1.to_dict()["id"], self.bm1.id)
+        self.assertEqual(self.bm2.to_dict()["id"], self.bm2.id)
+
+        self.assertEqual(self.bm1.to_dict()["created_at"],
+                         self.bm1.created_at.isoformat())
+        self.assertEqual(self.bm2.to_dict()["created_at"],
+                         self.bm2.created_at.isoformat())
+
+        self.assertEqual(self.bm1.to_dict()["updated_at"],
+                         self.bm1.updated_at.isoformat())
+        self.assertEqual(self.bm2.to_dict()["updated_at"],
+                         self.bm2.updated_at.isoformat())
+
+    def test_base_model_to_dict_type(self):
+        """Test to_dict method type in BaseModel class"""
+        self.assertEqual(type(self.bm1.to_dict()["created_at"]), str)
+        self.assertEqual(type(self.bm2.to_dict()["created_at"]), str)
+        self.assertEqual(type(self.bm1.to_dict()["updated_at"]), str)
+        self.assertEqual(type(self.bm2.to_dict()["updated_at"]), str)
+
+    def test_base_model_to_dict_basic(self):
+        """Test to_dict method basic functionality in BaseModel class"""
+        bm3 = BaseModel()
+        bm3.name = "Holberton"
+        bm3.my_number = 89
+        bm3_dict = bm3.to_dict()
+        bm3_json = json.dumps(bm3_dict)
+        self.assertEqual(type(bm3_dict), dict)
+        self.assertIn("__class__", bm3_dict)
+        self.assertIsInstance(bm3_json, str)
+
+    def test_base_model_to_dict_diff(self):
+        """Test to_dict method with different instances in BaseModel class"""
+        bm3 = BaseModel()
+        bm3.name = "Holberton"
+        bm3.my_number = 89
+        bm3_dict = bm3.to_dict()
+        bm3_json = json.dumps(bm3_dict)
+
+        bm4 = BaseModel()
+        bm4.name = "Holberton"
+        bm4.my_number = 89
+        bm4_dict = bm4.to_dict()
+        bm4_json = json.dumps(bm4_dict)
+
+        self.assertNotEqual(bm3_dict, bm4_dict)
+        self.assertNotEqual(bm3_json, bm4_json)
