@@ -23,10 +23,14 @@ class HBNBCommand(cmd.Cmd):
         emptyline: do nothing when empty line is entered
         do_quit: exit the program
         do_EOF: exit the program
-        do_create: create a new instance of BaseModel, saves it and prints the id
-        do_show: prints the string representation of an instance based on the class name and id
+        do_create: create a new instance of BaseModel,
+            saves it and prints the id
+        do_show: prints the string representation of an
+            instance based on the class name and id
         do_destroy: deletes an instance based on the class name and id
-        do_all: prints all string representation of all instances based or not on the class name
-        do_update: updates an instance based on the class name and id by adding or updating attribute
+        do_all: prints all string representation of all
+            instances based or not on the class name
+        do_update: updates an instance based on the class name
+            and id by adding or updating attribute
     """
     pass
