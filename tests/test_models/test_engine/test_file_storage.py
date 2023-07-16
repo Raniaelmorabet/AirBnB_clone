@@ -8,12 +8,13 @@ from models.base_model import BaseModel
 
 class TestFileStorage(unittest.TestCase):
     """
-    Test cases for the FileStorage class in the models module.
+    Test cases for the FileStorage class in the models' module.
     """
 
     def setUp(self):
         """
-        Set up the test case by creating a new instance of FileStorage and removing any existing JSON file.
+        Set up the test case by creating a new instance
+        of FileStorage and removing any existing JSON file.
         """
         self.storage = storage
         self.file_path = self.storage._FileStorage__file_path
@@ -66,7 +67,8 @@ class TestFileStorage(unittest.TestCase):
 
     def test_reload_nonexistent_file(self):
         """
-        Test the 'reload' method of FileStorage when the JSON file doesn't exist.
+        Test the 'reload' method of FileStorage
+        when the JSON file doesn't exist.
         """
         self.storage.reload()
         objs = self.storage.all()
