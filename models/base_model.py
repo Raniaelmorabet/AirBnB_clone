@@ -12,20 +12,26 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """Instantiates a new model
+
         Args:
             *args: Unused
             **kwargs: A dictionary of arguments and values for the
-            instantiation of the model
+                instantiation of the model
+
         Attributes:
-            id: unique id generated
-            created_at: datetime object set at the time of creation
-            updated_at: datetime object set at the time of creation and
-            updated whenever the object is changed
+            id: Unique ID generated
+            created_at: Datetime object set at the time of creation
+            updated_at: Datetime object set at the time of creation and
+                updated whenever the object is changed
         """
         if kwargs:
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
-                    setattr(self, key, datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f"))
+                    setattr(
+                        self,
+                        key,
+                        datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                    )
                 elif key == "__class__":
                     continue
                 else:
@@ -38,7 +44,11 @@ class BaseModel:
 
     def __str__(self):
         """Returns a string representation of the instance"""
-        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
+        return "[{}] ({}) {}".format(
+            self.__class__.__name__,
+            self.id,
+            self.__dict__
+        )
 
     def save(self):
         """Updates updated_at with the current datetime"""
