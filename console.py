@@ -29,97 +29,120 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_create(self, arg):
-        """Create a new instance of a class, save it, and print its id."""
-        args = arg.split()
-        if not args:
+        """Create a new instance of BaseModel, save it, and print its id."""
+        if not arg:
             print("** class name missing **")
-        elif args[0] not in self.classes:
+        elif arg not in self.classes:
             print("** class doesn't exist **")
         else:
-            class_name = args[0]
-            kwargs = {}
-            for arg in args[1:]:
-                key, value = arg.split("=")
-                kwargs[key] = value.strip("\"'")
-            instance = self.classes[class_name](**kwargs)
-            instance.save()
-            print(instance.id)
+            obj = self.classes[arg]()
+            obj.save()
+            print(obj.id)
 
     def do_show(self, arg):
         """Print the string representation of an instance."""
-        args = arg.split()
-        if not args:
+        if not arg:
             print("** class name missing **")
-        elif args[0] not in self.classes:
-            print("** class doesn't exist **")
-        elif len(args) < 2:
-            print("** instance id missing **")
         else:
-            class_name = args[0]
-            instance_id = args[1]
-            key = class_name + "." + instance_id
-            instances = storage.all()
-            if key in instances:
-                instance = instances[key]
-                print(instance)
+            args = arg.split()
+            if args[0] not in self.classes:
+                print("** class doesn't exist **")
+            elif len(args) < 2:
+                print("** instance id missing **")
             else:
-                print("** no instance found **")
+                key = args[0] + "." + args[1]
+                if key not in storage.all():
+                    print("** no instance found **")
+                else:
+                    print(storage.all()[key])
 
     def do_destroy(self, arg):
         """Delete an instance based on the class name and id."""
-        args = arg.split()
-        if not args:
+        if not arg:
             print("** class name missing **")
-        elif args[0] not in self.classes:
-            print("** class doesn't exist **")
-        elif len(args) < 2:
-            print("** instance id missing **")
         else:
-            class_name = args[0]
-            instance_id = args[1]
-            key = class_name + "." + instance_id
-            instances = storage.all()
-            if key in instances:
-                del instances[key]
-                storage.save()
+            args = arg.split()
+            if args[0] not in self.classes:
+                print("** class doesn't exist **")
+            elif len(args) < 2:
+                print("** instance id missing **")
             else:
-                print("** no instance found **")
+                key = args[0] + "." + args[1]
+                if key not in storage.all():
+                    print("** no instance found **")
+                else:
+                    del storage.all()[key]
+                    storage.save()
 
     def do_all(self, arg):
-        """Print the string representation of all instances or instances of a specific class."""
-        instances = storage.all()
-        if arg:
-            class_name = arg.split()[0]
-            if class_name not in self.classes:
-                print("** class doesn't exist **")
-                return
-            instances = storage.all(class_name)
-        print([str(obj) for obj in instances.values()])
+        """Print the string representation of all instances."""
+        objs = storage.all()
+        if not arg:
+            print([str(obj) for obj in objs.values()])
+        elif arg not in self.classes:
+            print("** class doesn't exist **")
+        else:
+            filtered_objs = [str(obj) for obj in objs.values() if isinstance(obj, self.classes[arg])]
+            print(filtered_objs)
 
     def do_update(self, arg):
         """Update an instance based on the class name and id."""
-        args = arg.split()
-        if not args:
+        if not arg:
             print("** class name missing **")
-        elif args[0] not in self.classes:
-            print("** class doesn't exist **")
-        elif len(args) < 2:
-            print("** instance id missing **")
-        elif len(args) < 3:
-            print("** attribute name missing **")
-        elif len(args) < 4:
-            print("** value missing **")
         else:
-            class_name = args[0]
-            instance_id = args[1]
-            key = class_name + "." + instance_id
-            instances = storage.all()
-            if key in instances:
-                instance = instances[key]
-                setattr(instance, args[2], args[3])
-                instance.save()
+            args = arg.split()
+            if args[0] not in self.classes:
+                print("** class doesn't exist **")
+            elif len(args) < 2:
+                print("** instance id missing **")
             else:
-                print("** no instance found **")
+                key = args[0] + "." + args[1]
+                if key not in storage.all():
+                    print("** no instance found **")
+                elif len(args) < 3:
+                    print("** attribute name missing **")
+                elif len(args) < 4:
+                    print("** value missing **")
+                else:
+                    obj = storage.all()[key]
+                    setattr(obj, args[2], args[3])
+                    obj.save()
+
+    def default(self, line):
+        """Called on an input line when the command prefix is not recognized."""
+        commands = {
+            "all": self.do_all,
+            "count": self.do_count
+        }
+        args = line.split(".")
+        if len(args) > 1 and args[0] in self.classes and args[1] in commands:
+            command = args[1]
+            class_name = args[0]
+            args = command.split("(")
+            command = args[0]
+            if command in commands:
+                args = args[1].split(")")[0].split(", ")
+                if class_name in self.classes:
+                    if command == "all":
+                        self.do_all(class_name)
+                    elif command == "count":
+                        self.do_count(class_name)
+        else:
+            print("*** Unknown syntax:", line)
+
+    def do_count(self, arg):
+        """Retrieve the number of instances of a class."""
+        if not arg:
+            print("** class name missing **")
+        elif arg not in self.classes:
+            print("** class doesn't exist **")
+        else:
+            count = 0
+            objs = storage.all()
+            for obj in objs.values():
+                if isinstance(obj, self.classes[arg]):
+                    count += 1
+            print(count)
 
 
 if __name__ == "__main__":
