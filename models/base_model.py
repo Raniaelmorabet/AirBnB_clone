@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 """
-This module defines a base class for all models in our hbnb clone
+This module defines a base class for all models in our HBNB clone.
 """
 
 import models
@@ -12,7 +12,7 @@ import json
 
 class BaseModel:
     """
-    A base class for all hbnb models
+    A base class for all HBNB models.
     """
 
     def __init__(self, *args, **kwargs):
