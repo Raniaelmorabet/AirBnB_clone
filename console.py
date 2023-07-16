@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 """This module contains the entry point of the command interpreter."""
 import cmd
-import re
-
 from models.base_model import BaseModel
 from models.user import User
 from models import storage
@@ -146,33 +144,6 @@ class HBNBCommand(cmd.Cmd):
                 if isinstance(obj, self.classes[arg]):
                     count += 1
             print(count)
-
-    def precmd(self, line):
-        if not line:
-            return '\n'
-
-        pattern = re.compile(r"(\w+)\.(\w+)\((.*)\)")
-        match_list = pattern.findall(line)
-
-        if not match_list:
-            return super().precmd(line)
-
-        match_tuple = match_list[0]
-        if not match_tuple[2]:
-            if match_tuple[1] == "count":
-                instance_objs = storage.all()
-                count = sum(1 for v in instance_objs.values() if
-                            isinstance(v, globals()[match_tuple[0]]))
-                print(count)
-            return "\n"
-
-        args = match_tuple[2].split(", ")
-        args = [re.sub("[\"\']", "", arg) for arg in args]
-        if len(args) > 1:
-            match_json = re.findall(r"{.*}", match_tuple[2])
-            if match_json:
-                args[1] = re.sub("\'", "\"", match_json[0])
-        return "{} {} {}".format(match_tuple[1], match_tuple[0], ' '.join(args))
 
 
 if __name__ == "__main__":
