@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 """Defines unittests for models/city.py"""
 
+import os
+import datetime
+import time
 import unittest
 from models.city import City
 
@@ -22,11 +25,11 @@ class TestCityInstantiation(unittest.TestCase):
 
     def test_created_at_is_public_datetime(self):
         city = City()
-        self.assertEqual(datetime, type(city.created_at))
+        self.assertEqual(datetime.datetime, type(city.created_at))
 
     def test_updated_at_is_public_datetime(self):
         city = City()
-        self.assertEqual(datetime, type(city.updated_at))
+        self.assertEqual(datetime.datetime, type(city.updated_at))
 
     def test_state_id_is_public_class_attribute(self):
         city = City()
@@ -47,18 +50,18 @@ class TestCityInstantiation(unittest.TestCase):
 
     def test_two_cities_different_created_at(self):
         city1 = City()
-        sleep(0.05)
+        time.sleep(0.05)
         city2 = City()
         self.assertLess(city1.created_at, city2.created_at)
 
     def test_two_cities_different_updated_at(self):
         city1 = City()
-        sleep(0.05)
+        time.sleep(0.05)
         city2 = City()
         self.assertLess(city1.updated_at, city2.updated_at)
 
     def test_str_representation(self):
-        dt = datetime.today()
+        dt = datetime.datetime.today()
         dt_repr = repr(dt)
         city = City()
         city.id = "123456"
@@ -74,7 +77,7 @@ class TestCityInstantiation(unittest.TestCase):
         self.assertNotIn(None, city.__dict__.values())
 
     def test_instantiation_with_kwargs(self):
-        dt = datetime.today()
+        dt = datetime.datetime.today()
         dt_iso = dt.isoformat()
         city = City(id="345", created_at=dt_iso, updated_at=dt_iso)
         self.assertEqual(city.id, "345")
@@ -90,13 +93,13 @@ class TestCitySave(unittest.TestCase):
     """Test cases for City save method."""
 
     @classmethod
-    def setUp(self):
+    def setUpClass(cls):
         try:
             os.rename("file.json", "tmp")
         except IOError:
             pass
 
-    def tearDown(self):
+    def tearDownClass(cls):
         try:
             os.remove("file.json")
         except IOError:
@@ -108,19 +111,19 @@ class TestCitySave(unittest.TestCase):
 
     def test_one_save(self):
         city = City()
-        sleep(0.05)
+        time.sleep(0.05)
         first_updated_at = city.updated_at
         city.save()
         self.assertLess(first_updated_at, city.updated_at)
 
     def test_two_saves(self):
         city = City()
-        sleep(0.05)
+        time.sleep(0.05)
         first_updated_at = city.updated_at
         city.save()
         second_updated_at = city.updated_at
         self.assertLess(first_updated_at, second_updated_at)
-        sleep(0.05)
+        time.sleep(0.05)
         city.save()
         self.assertLess(second_updated_at, city.updated_at)
 
@@ -142,7 +145,7 @@ class TestCityToDict(unittest.TestCase):
 
     def test_to_dict_type(self):
         city = City()
-        self.assertTrue(dict, type(city.to_dict()))
+        self.assertEqual(dict, type(city.to_dict()))
 
     def test_to_dict_contains_correct_keys(self):
         city = City()
@@ -166,7 +169,7 @@ class TestCityToDict(unittest.TestCase):
         self.assertEqual(str, type(city_dict["updated_at"]))
 
     def test_to_dict_output(self):
-        dt = datetime.today()
+        dt = datetime.datetime.today()
         city = City()
         city.id = "123456"
         city.created_at = city.updated_at = dt
