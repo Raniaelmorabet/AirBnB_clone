@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 """Defines unittests for models/review.py"""
+import os
+import datetime
+import time
 import unittest
 from models.review import Review
 
@@ -21,11 +24,11 @@ class TestReviewInstantiation(unittest.TestCase):
 
     def test_created_at_is_public_datetime(self):
         review = Review()
-        self.assertEqual(datetime, type(review.created_at))
+        self.assertEqual(datetime.datetime, type(review.created_at))
 
     def test_updated_at_is_public_datetime(self):
         review = Review()
-        self.assertEqual(datetime, type(review.updated_at))
+        self.assertEqual(datetime.datetime, type(review.updated_at))
 
     def test_place_id_is_public_class_attribute(self):
         review = Review()
@@ -52,18 +55,18 @@ class TestReviewInstantiation(unittest.TestCase):
 
     def test_two_reviews_different_created_at(self):
         review1 = Review()
-        sleep(0.05)
+        time.sleep(0.05)
         review2 = Review()
         self.assertLess(review1.created_at, review2.created_at)
 
     def test_two_reviews_different_updated_at(self):
         review1 = Review()
-        sleep(0.05)
+        time.sleep(0.05)
         review2 = Review()
         self.assertLess(review1.updated_at, review2.updated_at)
 
     def test_str_representation(self):
-        dt = datetime.today()
+        dt = datetime.datetime.today()
         dt_repr = repr(dt)
         review = Review()
         review.id = "123456"
@@ -79,7 +82,7 @@ class TestReviewInstantiation(unittest.TestCase):
         self.assertNotIn(None, review.__dict__.values())
 
     def test_instantiation_with_kwargs(self):
-        dt = datetime.today()
+        dt = datetime.datetime.today()
         dt_iso = dt.isoformat()
         review = Review(id="345", created_at=dt_iso, updated_at=dt_iso)
         self.assertEqual(review.id, "345")
@@ -113,19 +116,19 @@ class TestReviewSave(unittest.TestCase):
 
     def test_one_save(self):
         review = Review()
-        sleep(0.05)
+        time.sleep(0.05)
         first_updated_at = review.updated_at
         review.save()
         self.assertLess(first_updated_at, review.updated_at)
 
     def test_two_saves(self):
         review = Review()
-        sleep(0.05)
+        time.sleep(0.05)
         first_updated_at = review.updated_at
         review.save()
         second_updated_at = review.updated_at
         self.assertLess(first_updated_at, second_updated_at)
-        sleep(0.05)
+        time.sleep(0.05)
         review.save()
         self.assertLess(second_updated_at, review.updated_at)
 
@@ -147,7 +150,7 @@ class TestReviewToDict(unittest.TestCase):
 
     def test_to_dict_type(self):
         review = Review()
-        self.assertTrue(dict, type(review.to_dict()))
+        self.assertEqual(dict, type(review.to_dict()))
 
     def test_to_dict_contains_correct_keys(self):
         review = Review()
@@ -171,7 +174,7 @@ class TestReviewToDict(unittest.TestCase):
         self.assertEqual(str, type(review_dict["updated_at"]))
 
     def test_to_dict_output(self):
-        dt = datetime.today()
+        dt = datetime.datetime.today()
         review = Review()
         review.id = "123456"
         review.created_at = review.updated_at = dt
