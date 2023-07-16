@@ -41,14 +41,12 @@ class BaseModel:
             storage.new(self)
             storage.save()
 
-    storage.save()
-
     def __str__(self):
         """Returns a string representation of the instance"""
         return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
 
     def save(self):
-        """Updates updated_at with the current datetime"""
+        """Updates updated_at with the current datetime and saves the instance"""
         self.updated_at = datetime.now()
         storage.save()
 
