@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 """Defines the FileStorage class."""
 import json
-from models.user import User
-from models.base_model import BaseModel
 
 
 class FileStorage:
@@ -47,11 +45,7 @@ class FileStorage:
         try:
             with open(self.__file_path, 'r') as file:
                 serialized_objects = json.load(file)
-
-                classes = {
-                    'BaseModel' : BaseModel,
-                    'User' : User
-                }
+                from models.base_model import BaseModel
 
                 for key, value in serialized_objects.items():
                     class_name, obj_id = key.split('.')
