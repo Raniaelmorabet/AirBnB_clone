@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """This module contains the entry point of the command interpreter."""
+
 import cmd
 import re
 from models.base_model import BaseModel
@@ -110,6 +111,20 @@ class HBNBCommand(cmd.Cmd):
                     setattr(obj, args[2], args[3])
                     obj.save()
 
+    def do_count(self, arg):
+        """Retrieve the number of instances of a class."""
+        if not arg:
+            print("** class name missing **")
+        elif arg not in self.classes:
+            print("** class doesn't exist **")
+        else:
+            count = 0
+            objs = storage.all()
+            for obj in objs.values():
+                if obj.__class__.__name__ == arg:
+                    count += 1
+            print(count)
+
     def default(self, line):
         """Called on an input line when the
         command prefix is not recognized."""
@@ -121,31 +136,15 @@ class HBNBCommand(cmd.Cmd):
         if len(args) > 1 and args[0] in self.classes and args[1] in commands:
             command = args[1]
             class_name = args[0]
-            args = command.split("(")
-            command = args[0]
             if command in commands:
-                args = args[1].split(")")[0].split(", ")
-                if class_name in self.classes:
-                    if command == "all":
-                        self.do_all(class_name)
-                    elif command == "count":
-                        self.do_count(class_name)
+                args = args[1].split("(")
+                command = args[0]
+                if len(args) > 1:
+                    args = args[1].split(")")[0].split(", ")
+                    if class_name in self.classes:
+                        commands[command](class_name)
         else:
             print("*** Unknown syntax:", line)
-
-    def do_count(self, arg):
-        """Retrieve the number of instances of a class."""
-        if not arg:
-            print("** class name missing **")
-        elif arg not in self.classes:
-            print("** class doesn't exist **")
-        else:
-            count = 0
-            objs = storage.all()
-            for obj in objs.values():
-                if isinstance(obj, self.classes[arg]):
-                    count += 1
-            print(count)
 
     def precmd(self, line):
         """Parse the input and call the corresponding method.
@@ -163,33 +162,11 @@ class HBNBCommand(cmd.Cmd):
             return super().precmd(line)
 
         mt = ml[0]
-        if not mt[2]:
-            if mt[1] == "count":
-                instance_objs = storage.all()
-                count = 0
-                for obj in instance_objs.items():
-                    if type(obj).__name__ == mt[0]:
-                        count += 1
-                print(count)
-                return "\n"
-            return "{} {}".format(mt[1], mt[0])
-        else:
-            av = mt[2].split(", ")
-            if len(av) == 1:
-                return "{} {} {}".format(
-                    mt[1], mt[0],
-                    re.sub("[\"\']", "", mt[2]))
-            else:
-                mj = re.findall(r"{.*}", mt[2])
-                if mj:
-                    return "{} {} {} {}".format(
-                        mt[1], mt[0],
-                        re.sub("[\"\']", "", av[0]),
-                        re.sub("\'", "\"", mj[0]))
-                return "{} {} {} {} {}".format(
-                    mt[1], mt[0],
-                    re.sub("[\"\']", "", av[0]),
-                    re.sub("[\"\']", "", av[1]), av[2])
+        if mt[1] == "count":
+            if mt[0] in self.classes:
+                self.do_count(mt[0])
+                return '\n'
+        return "{} {}".format(mt[1], mt[0])
 
 
 if __name__ == "__main__":
