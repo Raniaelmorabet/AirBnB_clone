@@ -1,126 +1,49 @@
 #!/usr/bin/python3
-
-"""
-This module defines a base class for all models in our hbnb clone
-"""
-
-import uuid
+"""Defines the BaseModel class."""
+import models
+from uuid import uuid4
 from datetime import datetime
-import json
 
 
 class BaseModel:
-    """
-    A base class for all hbnb models
-    """
+    """Represents the BaseModel of the HBnB project."""
 
     def __init__(self, *args, **kwargs):
-        """
-        Initializes a new instance of BaseModel.
-
+        """Initialize a new BaseModel.
         Args:
-            *args: Variable length argument list.
-            **kwargs: Arbitrary keyword arguments.
-
-        Notes:
-            If kwargs is not empty, the instance is created from a dictionary representation.
-            Otherwise, a new instance is created.
+            *args (any): Unused.
+            **kwargs (dict): Key/value pairs of attributes.
         """
-        if kwargs:
-            for key, value in kwargs.items():
-                if key == "created_at" or key == "updated_at":
-                    setattr(self, key, datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f"))
-                elif key == "__class__":
-                    continue
+        tform = "%Y-%m-%dT%H:%M:%S.%f"
+        self.id = str(uuid4())
+        self.created_at = datetime.today()
+        self.updated_at = datetime.today()
+        if len(kwargs) != 0:
+            for k, v in kwargs.items():
+                if k == "created_at" or k == "updated_at":
+                    self.__dict__[k] = datetime.strptime(v, tform)
                 else:
-                    setattr(self, key, value)
+                    self.__dict__[k] = v
         else:
-            self.id = str(uuid.uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
-
-    def __str__(self):
-        """
-        Returns a string representation of the instance.
-
-        Returns:
-            A string representation of the instance.
-        """
-        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
+            models.storage.new(self)
 
     def save(self):
-        """
-        Updates updated_at with the current datetime and saves the instance.
-        """
-        self.updated_at = datetime.now()
+        """Update updated_at with the current datetime."""
+        self.updated_at = datetime.today()
         models.storage.save()
 
     def to_dict(self):
+        """Return the dictionary of the BaseModel instance.
+        Includes the key/value pair __class__ representing
+        the class name of the object.
         """
-        Returns a dictionary containing all keys/values of __dict__.
+        rdict = self.__dict__.copy()
+        rdict["created_at"] = self.created_at.isoformat()
+        rdict["updated_at"] = self.updated_at.isoformat()
+        rdict["__class__"] = self.__class__.__name__
+        return rdict
 
-        Returns:
-            A dictionary representation of the instance.
-        """
-        my_dict = self.__dict__.copy()
-        my_dict["__class__"] = self.__class__.__name__
-        my_dict["created_at"] = self.created_at.isoformat()
-        my_dict["updated_at"] = self.updated_at.isoformat()
-        return my_dict
-
-
-class FileStorage:
-    """
-    This class serializes instances to a JSON file and deserializes a JSON file to instances.
-    """
-
-    __file_path = "file.json"
-    __objects = {}
-
-    def all(self):
-        """
-        Returns the dictionary of all objects.
-        """
-        return self.__objects
-
-    def new(self, obj):
-        """
-        Sets a new object in __objects with the key <obj class name>.id.
-
-        Args:
-            obj: The object to be added to __objects.
-        """
-        key = "{}.{}".format(obj.__class__.__name__, obj.id)
-        self.__objects[key] = obj
-
-    def save(self):
-        """
-        Serializes __objects to the JSON file (__file_path).
-        """
-        serialized_objects = {}
-        for key, obj in self.__objects.items():
-            serialized_objects[key] = obj.to_dict()
-
-        with open(self.__file_path, 'w') as file:
-            json.dump(serialized_objects, file)
-
-    def reload(self):
-        """
-        Deserializes the JSON file to __objects (if it exists).
-        """
-        try:
-            with open(self.__file_path, 'r') as file:
-                serialized_objects = json.load(file)
-                from models.base_model import BaseModel
-
-                for key, value in serialized_objects.items():
-                    class_name, obj_id = key.split('.')
-                    obj = eval(class_name)(**value)
-                    self.__objects[key] = obj
-
-        except FileNotFoundError:
-            pass
-
-
-storage = FileStorage()
-storage.reload()
+    def __str__(self):
+        """Return the print/str representation of the BaseModel instance."""
+        clname = self.__class__.__name__
+        return "[{}] ({}) {}".format(clname, self.id, self.__dict__)
