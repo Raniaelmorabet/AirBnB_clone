@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """Defines unittests for models/user.py."""
-
 import unittest
 from datetime import datetime
 import os
