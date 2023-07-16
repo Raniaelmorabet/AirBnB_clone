@@ -47,23 +47,23 @@ EOF  help  quit
 
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("")
-            self.assertEqual(f.getvalue(), "")
+            self.assertEqual(f.getvalue(), "\n")
 
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd(" ")
-            self.assertEqual(f.getvalue(), "")
+            self.assertEqual(f.getvalue(), "\n")
 
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("quit")
-            self.assertEqual(f.getvalue(), "Quit command to exit the program\n")
+            self.assertEqual(f.getvalue(), "")
 
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("EOF")
-            self.assertEqual(f.getvalue(), "EOF command to exit the program\n")
+            self.assertEqual(f.getvalue(), "")
 
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("\n")
-            self.assertEqual(f.getvalue(), "")
+            self.assertEqual(f.getvalue(), "\n")
 
 if __name__ == '__main__':
     unittest.main()
