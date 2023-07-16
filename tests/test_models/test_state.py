@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 """Defines unittests for models/state.py"""
+import os
+import datetime
+import time
 import unittest
 from models.state import State
 
@@ -21,11 +24,11 @@ class TestStateInstantiation(unittest.TestCase):
 
     def test_created_at_is_public_datetime(self):
         state = State()
-        self.assertEqual(datetime, type(state.created_at))
+        self.assertEqual(datetime.datetime, type(state.created_at))
 
     def test_updated_at_is_public_datetime(self):
         state = State()
-        self.assertEqual(datetime, type(state.updated_at))
+        self.assertEqual(datetime.datetime, type(state.updated_at))
 
     def test_name_is_public_class_attribute(self):
         state = State()
@@ -40,18 +43,18 @@ class TestStateInstantiation(unittest.TestCase):
 
     def test_two_states_different_created_at(self):
         state1 = State()
-        sleep(0.05)
+        time.sleep(0.05)
         state2 = State()
         self.assertLess(state1.created_at, state2.created_at)
 
     def test_two_states_different_updated_at(self):
         state1 = State()
-        sleep(0.05)
+        time.sleep(0.05)
         state2 = State()
         self.assertLess(state1.updated_at, state2.updated_at)
 
     def test_str_representation(self):
-        dt = datetime.today()
+        dt = datetime.datetime.today()
         dt_repr = repr(dt)
         state = State()
         state.id = "123456"
@@ -67,7 +70,7 @@ class TestStateInstantiation(unittest.TestCase):
         self.assertNotIn(None, state.__dict__.values())
 
     def test_instantiation_with_kwargs(self):
-        dt = datetime.today()
+        dt = datetime.datetime.today()
         dt_iso = dt.isoformat()
         state = State(id="345", created_at=dt_iso, updated_at=dt_iso)
         self.assertEqual(state.id, "345")
@@ -101,19 +104,19 @@ class TestStateSave(unittest.TestCase):
 
     def test_one_save(self):
         state = State()
-        sleep(0.05)
+        time.sleep(0.05)
         first_updated_at = state.updated_at
         state.save()
         self.assertLess(first_updated_at, state.updated_at)
 
     def test_two_saves(self):
         state = State()
-        sleep(0.05)
+        time.sleep(0.05)
         first_updated_at = state.updated_at
         state.save()
         second_updated_at = state.updated_at
         self.assertLess(first_updated_at, second_updated_at)
-        sleep(0.05)
+        time.sleep(0.05)
         state.save()
         self.assertLess(second_updated_at, state.updated_at)
 
@@ -135,7 +138,7 @@ class TestStateToDict(unittest.TestCase):
 
     def test_to_dict_type(self):
         state = State()
-        self.assertTrue(dict, type(state.to_dict()))
+        self.assertEqual(dict, type(state.to_dict()))
 
     def test_to_dict_contains_correct_keys(self):
         state = State()
@@ -159,7 +162,7 @@ class TestStateToDict(unittest.TestCase):
         self.assertEqual(str, type(state_dict["updated_at"]))
 
     def test_to_dict_output(self):
-        dt = datetime.today()
+        dt = datetime.datetime.today()
         state = State()
         state.id = "123456"
         state.created_at = state.updated_at = dt
