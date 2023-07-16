@@ -1,5 +1,9 @@
 #!/usr/bin/python3
-"""Defines the FileStorage class."""
+
+"""
+Defines the FileStorage class.
+"""
+
 import json
 from models.base_model import BaseModel
 from models.amenity import Amenity
@@ -8,6 +12,7 @@ from models.review import Review
 from models.place import Place
 from models.state import State
 from models.user import User
+
 
 class FileStorage:
     """
@@ -40,9 +45,9 @@ class FileStorage:
         serialized_objects = {}
         for key, obj in self.__objects.items():
             if isinstance(obj, User):
-            serialized_objects[key] = obj.to_dict()
+                serialized_objects[key] = obj.to_dict()
             else:
-            serialized_objects[key] = obj.to_dict()
+                serialized_objects[key] = obj.to_dict()
 
         with open(self.__file_path, 'w') as file:
             json.dump(serialized_objects, file)
@@ -54,7 +59,6 @@ class FileStorage:
         try:
             with open(self.__file_path, 'r') as file:
                 serialized_objects = json.load(file)
-                from models.base_model import BaseModel
 
                 for key, value in serialized_objects.items():
                     class_name, obj_id = key.split('.')
