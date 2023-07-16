@@ -1,11 +1,15 @@
 #!/usr/bin/python3
-""" This is a file storage that serializes an instance to a JSON file (JSON.dump)
-    It also deserializes a JSON file to an instance (JSON.load)
+
+"""This module provides a file storage that serializes instances to a JSON file (JSON.dump)
+   It also deserializes a JSON file to instances (JSON.load)
 """
+
 import json
 
 
 class FileStorage:
+    """A file storage class that handles serialization and deserialization of instances"""
+
     __file_path = "file.json"
     __objects = {}
 
