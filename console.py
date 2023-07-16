@@ -112,7 +112,8 @@ class HBNBCommand(cmd.Cmd):
                     obj.save()
 
     def default(self, line):
-        """Called on an input line when the command prefix is not recognized."""
+        """Called on an input line when the
+        command prefix is not recognized."""
         commands = {
             "all": self.do_all,
             "count": self.do_count
@@ -148,31 +149,48 @@ class HBNBCommand(cmd.Cmd):
             print(count)
 
     def precmd(self, line):
+        """Parse the input and call the corresponding method.
+
+        Args:
+            line (str): input line.
+        """
         if not line:
             return '\n'
 
-        pattern = re.compile(r"(\w+)\.(\w+)\((.*)\)")
-        match_list = pattern.findall(line)
+        p = re.compile(r"(\w+)\.(\w+)\((.*)\)")
 
-        if not match_list:
+        ml = p.findall(line)
+        if not ml:
             return super().precmd(line)
 
-        match_tuple = match_list[0]
-        if not match_tuple[2]:
-            if match_tuple[1] == "count":
+        mt = ml[0]
+        if not mt[2]:
+            if mt[1] == "count":
                 instance_objs = storage.all()
-                count = sum(1 for v in instance_objs.values() if
-                            isinstance(v, globals()[match_tuple[0]]))
+                count = 0
+                for obj in instance_objs.items():
+                    if type(obj).__name__ == mt[0]:
+                        count += 1
                 print(count)
-            return "\n"
-
-        args = match_tuple[2].split(", ")
-        args = [re.sub("[\"\']", "", arg) for arg in args]
-        if len(args) > 1:
-            match_json = re.findall(r"{.*}", match_tuple[2])
-            if match_json:
-                args[1] = re.sub("\'", "\"", match_json[0])
-        return "{} {} {}".format(match_tuple[1], match_tuple[0], ' '.join(args))
+                return "\n"
+            return "{} {}".format(mt[1], mt[0])
+        else:
+            av = mt[2].split(", ")
+            if len(av) == 1:
+                return "{} {} {}".format(
+                    mt[1], mt[0],
+                    re.sub("[\"\']", "", mt[2]))
+            else:
+                mj = re.findall(r"{.*}", mt[2])
+                if mj:
+                    return "{} {} {} {}".format(
+                        mt[1], mt[0],
+                        re.sub("[\"\']", "", av[0]),
+                        re.sub("\'", "\"", mj[0]))
+                return "{} {} {} {} {}".format(
+                    mt[1], mt[0],
+                    re.sub("[\"\']", "", av[0]),
+                    re.sub("[\"\']", "", av[1]), av[2])
 
 
 if __name__ == "__main__":
