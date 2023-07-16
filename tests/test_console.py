@@ -37,7 +37,7 @@ EOF  help  quit
 
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("help EOF")
-            self.assertEqual(f.getvalue(), "EOF command to exit the program\n")
+            self.assertEqual(f.getvalue(), "Exit the program with EOF (Ctrl+D)\n")
 
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("help help")
@@ -59,7 +59,7 @@ EOF  help  quit
 
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("EOF")
-            self.assertEqual(f.getvalue(), "EOF command to exit the program\n")
+            self.assertEqual(f.getvalue(), "")
 
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("\n")
