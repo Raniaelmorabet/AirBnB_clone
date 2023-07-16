@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 """Defines unittests for models/place"""
+import os
+import datetime
+import time
 import unittest
 from models.place import Place
 
@@ -21,11 +24,11 @@ class TestPlaceInstantiation(unittest.TestCase):
 
     def test_created_at_is_public_datetime(self):
         place = Place()
-        self.assertEqual(datetime, type(place.created_at))
+        self.assertEqual(datetime.datetime, type(place.created_at))
 
     def test_updated_at_is_public_datetime(self):
         place = Place()
-        self.assertEqual(datetime, type(place.updated_at))
+        self.assertEqual(datetime.datetime, type(place.updated_at))
 
     def test_city_id_is_public_class_attribute(self):
         place = Place()
@@ -100,18 +103,18 @@ class TestPlaceInstantiation(unittest.TestCase):
 
     def test_two_places_different_created_at(self):
         place1 = Place()
-        sleep(0.05)
+        time.sleep(0.05)
         place2 = Place()
         self.assertLess(place1.created_at, place2.created_at)
 
     def test_two_places_different_updated_at(self):
         place1 = Place()
-        sleep(0.05)
+        time.sleep(0.05)
         place2 = Place()
         self.assertLess(place1.updated_at, place2.updated_at)
 
     def test_str_representation(self):
-        dt = datetime.today()
+        dt = datetime.datetime.today()
         dt_repr = repr(dt)
         place = Place()
         place.id = "123456"
@@ -127,7 +130,7 @@ class TestPlaceInstantiation(unittest.TestCase):
         self.assertNotIn(None, place.__dict__.values())
 
     def test_instantiation_with_kwargs(self):
-        dt = datetime.today()
+        dt = datetime.datetime.today()
         dt_iso = dt.isoformat()
         place = Place(id="345", created_at=dt_iso, updated_at=dt_iso)
         self.assertEqual(place.id, "345")
@@ -161,19 +164,19 @@ class TestPlaceSave(unittest.TestCase):
 
     def test_one_save(self):
         place = Place()
-        sleep(0.05)
+        time.sleep(0.05)
         first_updated_at = place.updated_at
         place.save()
         self.assertLess(first_updated_at, place.updated_at)
 
     def test_two_saves(self):
         place = Place()
-        sleep(0.05)
+        time.sleep(0.05)
         first_updated_at = place.updated_at
         place.save()
         second_updated_at = place.updated_at
         self.assertLess(first_updated_at, second_updated_at)
-        sleep(0.05)
+        time.sleep(0.05)
         place.save()
         self.assertLess(second_updated_at, place.updated_at)
 
@@ -195,7 +198,7 @@ class TestPlaceToDict(unittest.TestCase):
 
     def test_to_dict_type(self):
         place = Place()
-        self.assertTrue(dict, type(place.to_dict()))
+        self.assertEqual(dict, type(place.to_dict()))
 
     def test_to_dict_contains_correct_keys(self):
         place = Place()
@@ -219,7 +222,7 @@ class TestPlaceToDict(unittest.TestCase):
         self.assertEqual(str, type(place_dict["updated_at"]))
 
     def test_to_dict_output(self):
-        dt = datetime.today()
+        dt = datetime.datetime.today()
         place = Place()
         place.id = "123456"
         place.created_at = place.updated_at = dt
