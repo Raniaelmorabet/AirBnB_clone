@@ -89,10 +89,11 @@ class HBNBCommand(cmd.Cmd):
         """Print the string representation of all instances or instances of a specific class."""
         instances = storage.all()
         if arg:
-            if arg not in self.classes:
+            class_name = arg.split()[0]
+            if class_name not in self.classes:
                 print("** class doesn't exist **")
                 return
-            instances = {k: v for k, v in instances.items() if isinstance(v, self.classes[arg])}
+            instances = storage.all(class_name)
         print([str(obj) for obj in instances.values()])
 
     def do_update(self, arg):
