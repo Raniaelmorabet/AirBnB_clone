@@ -6,7 +6,6 @@ import unittest
 from unittest.mock import patch
 from io import StringIO
 import pep8
-import os
 
 import console
 from models.base_model import BaseModel
@@ -15,8 +14,9 @@ from console import HBNBCommand
 
 class TestConsole(unittest.TestCase):
     """Test for the console"""
+
     def test_pep8(self):
-        """Test pep8"""
+        """Test PEP 8 style compliance"""
         style = pep8.StyleGuide(quiet=True)
         result = style.check_files(["console.py"])
         self.assertEqual(result.total_errors, 0)
@@ -65,6 +65,7 @@ EOF  help  quit
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("\n")
             self.assertEqual(f.getvalue(), "")
-            
+
+
 if __name__ == '__main__':
     unittest.main()
