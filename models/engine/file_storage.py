@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 """Defines the FileStorage class."""
 import json
-from models.base_model import BaseModel
-from models.user import User
 
 
 class FileStorage:
@@ -13,21 +11,11 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
-    def all(self, cls=None):
+    def all(self):
         """
         Returns the dictionary of all objects.
-
-        Args:
-            cls: Optional. If provided, returns only objects of the specified class.
         """
-        if cls is None:
-            return self.__objects
-        else:
-            cls_objects = {}
-            for key, obj in self.__objects.items():
-                if isinstance(obj, cls):
-                    cls_objects[key] = obj
-            return cls_objects
+        return self.__objects
 
     def new(self, obj):
         """
@@ -57,16 +45,11 @@ class FileStorage:
         try:
             with open(self.__file_path, 'r') as file:
                 serialized_objects = json.load(file)
-
-                classes = {
-                    'BaseModel': BaseModel,
-                    'User': User
-                    # Add more classes here if necessary
-                }
+                from models.base_model import BaseModel
 
                 for key, value in serialized_objects.items():
                     class_name, obj_id = key.split('.')
-                    obj = classes[class_name](**value)
+                    obj = eval(class_name)(**value)
                     self.__objects[key] = obj
 
         except FileNotFoundError:
