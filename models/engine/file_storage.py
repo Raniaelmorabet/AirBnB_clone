@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 
-"""This module provides a file storage that serializes instances to a JSON file (JSON.dump)
-   It also deserializes a JSON file to instances (JSON.load)
+"""
+This module provides a file storage that serializes instances to a JSON file (JSON.dump)
+It also deserializes a JSON file to instances (JSON.load)
 """
 
 import json
@@ -27,6 +28,7 @@ class FileStorage:
         data = {}
         for key, obj in self.__objects.items():
             data[key] = obj.to_dict()
+
         with open(self.__file_path, 'w') as file:
             json.dump(data, file)
 
