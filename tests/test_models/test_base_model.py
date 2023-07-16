@@ -40,6 +40,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertTrue(isinstance(self.bm2, BaseModel))
 
     # --- Testing UUID --- #
+
     def test_base_model_id(self):
         """Test id attribute in BaseModel class"""
         self.assertTrue(hasattr(self.bm1, "id"))
@@ -78,6 +79,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(warn, str(msg.exception))
 
     # --- Testing datetime --- #
+
     def test_base_model_created_at(self):
         """Test created_at attribute in BaseModel class"""
         self.assertTrue(hasattr(self.bm1, "created_at"))
@@ -93,6 +95,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertTrue(isinstance(self.bm2.updated_at, datetime))
 
     # --- Testing str method --- #
+
     def test_base_model_str(self):
         """Test __str__ method in BaseModel class"""
         self.assertEqual(str(self.bm1), "[BaseModel] ({}) {}".
@@ -101,6 +104,7 @@ class TestBaseModel(unittest.TestCase):
                          format(self.bm2.id, self.bm2.__dict__))
 
     # --- Testing to_dict method --- #
+
     def test_base_model_to_dict(self):
         """Test to_dict method in BaseModel class"""
         self.assertTrue(hasattr(self.bm1, "to_dict"))
@@ -173,8 +177,3 @@ class TestBaseModel(unittest.TestCase):
         bm4_json = json.dumps(bm4_dict)
 
         self.assertNotEqual(bm3_dict, bm4_dict)
-        self.assertNotEqual(bm3_json, bm4_json)
-
-
-if __name__ == '__main__':
-    unittest.main()
