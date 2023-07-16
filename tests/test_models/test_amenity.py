@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 """Defines unittest for models/amenity"""
+import os
+import datetime
+import time
 import unittest
 from models.amenity import Amenity
 
@@ -21,11 +24,11 @@ class TestAmenityInstantiation(unittest.TestCase):
 
     def test_created_at_is_public_datetime(self):
         amenity = Amenity()
-        self.assertEqual(datetime, type(amenity.created_at))
+        self.assertEqual(datetime.datetime, type(amenity.created_at))
 
     def test_updated_at_is_public_datetime(self):
         amenity = Amenity()
-        self.assertEqual(datetime, type(amenity.updated_at))
+        self.assertEqual(datetime.datetime, type(amenity.updated_at))
 
     def test_name_is_public_class_attribute(self):
         amenity = Amenity()
@@ -40,18 +43,18 @@ class TestAmenityInstantiation(unittest.TestCase):
 
     def test_two_amenities_different_created_at(self):
         amenity1 = Amenity()
-        sleep(0.05)
+        time.sleep(0.05)
         amenity2 = Amenity()
         self.assertLess(amenity1.created_at, amenity2.created_at)
 
     def test_two_amenities_different_updated_at(self):
         amenity1 = Amenity()
-        sleep(0.05)
+        time.sleep(0.05)
         amenity2 = Amenity()
         self.assertLess(amenity1.updated_at, amenity2.updated_at)
 
     def test_str_representation(self):
-        dt = datetime.today()
+        dt = datetime.datetime.today()
         dt_repr = repr(dt)
         amenity = Amenity()
         amenity.id = "123456"
@@ -67,7 +70,7 @@ class TestAmenityInstantiation(unittest.TestCase):
         self.assertNotIn(None, amenity.__dict__.values())
 
     def test_instantiation_with_kwargs(self):
-        dt = datetime.today()
+        dt = datetime.datetime.today()
         dt_iso = dt.isoformat()
         amenity = Amenity(id="345", created_at=dt_iso, updated_at=dt_iso)
         self.assertEqual(amenity.id, "345")
@@ -101,19 +104,19 @@ class TestAmenitySave(unittest.TestCase):
 
     def test_one_save(self):
         amenity = Amenity()
-        sleep(0.05)
+        time.sleep(0.05)
         first_updated_at = amenity.updated_at
         amenity.save()
         self.assertLess(first_updated_at, amenity.updated_at)
 
     def test_two_saves(self):
         amenity = Amenity()
-        sleep(0.05)
+        time.sleep(0.05)
         first_updated_at = amenity.updated_at
         amenity.save()
         second_updated_at = amenity.updated_at
         self.assertLess(first_updated_at, second_updated_at)
-        sleep(0.05)
+        time.sleep(0.05)
         amenity.save()
         self.assertLess(second_updated_at, amenity.updated_at)
 
@@ -135,7 +138,7 @@ class TestAmenityToDict(unittest.TestCase):
 
     def test_to_dict_type(self):
         amenity = Amenity()
-        self.assertTrue(dict, type(amenity.to_dict()))
+        self.assertEqual(dict, type(amenity.to_dict()))
 
     def test_to_dict_contains_correct_keys(self):
         amenity = Amenity()
@@ -159,7 +162,7 @@ class TestAmenityToDict(unittest.TestCase):
         self.assertEqual(str, type(amenity_dict["updated_at"]))
 
     def test_to_dict_output(self):
-        dt = datetime.today()
+        dt = datetime.datetime.today()
         amenity = Amenity()
         amenity.id = "123456"
         amenity.created_at = amenity.updated_at = dt
