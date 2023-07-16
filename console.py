@@ -121,7 +121,7 @@ class HBNBCommand(cmd.Cmd):
             count = 0
             objs = storage.all()
             for obj in objs.values():
-                if obj.__class__.__name__ == arg:
+                if isinstance(obj, self.classes[arg]):
                     count += 1
             print(count)
 
