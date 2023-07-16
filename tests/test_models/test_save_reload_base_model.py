@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 import unittest
 import os
 from models import storage
@@ -18,6 +17,7 @@ class TestFileStorage(unittest.TestCase):
         self.file_path = self.storage._FileStorage__file_path
         if os.path.exists(self.file_path):
             os.remove(self.file_path)
+        self.storage._FileStorage__objects = {}
 
     def tearDown(self):
         """
