@@ -82,7 +82,8 @@ class HBNBCommand(cmd.Cmd):
         elif arg not in self.classes:
             print("** class doesn't exist **")
         else:
-            filtered_objs = [str(obj) for obj in objs.values() if isinstance(obj, self.classes[arg])]
+            filtered_objs = [str(obj) for obj in objs.values() if
+                             isinstance(obj, self.classes[arg])]
             print(filtered_objs)
 
     def do_update(self, arg):
@@ -109,7 +110,8 @@ class HBNBCommand(cmd.Cmd):
                     obj.save()
 
     def default(self, line):
-        """Called on an input line when the command prefix is not recognized."""
+        """Called on an input line when the
+        command prefix is not recognized."""
         commands = {
             "all": self.do_all,
             "count": self.do_count
