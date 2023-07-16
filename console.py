@@ -29,7 +29,7 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_create(self, arg):
-        """Create a new instance of BaseModel, save it, and print its id."""
+        """Create a new instance of a class, save it, and print its id."""
         if not arg:
             print("** class name missing **")
         elif arg not in self.classes:
@@ -110,8 +110,7 @@ class HBNBCommand(cmd.Cmd):
                     obj.save()
 
     def default(self, line):
-        """Called on an input line when the
-        command prefix is not recognized."""
+        """Called on an input line when the command prefix is not recognized."""
         commands = {
             "all": self.do_all,
             "count": self.do_count
