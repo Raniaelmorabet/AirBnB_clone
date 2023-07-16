@@ -9,6 +9,7 @@ import uuid
 import models
 from datetime import datetime
 
+
 class BaseModel:
     """Defines all common attributes/methods for other class"""
 
@@ -27,21 +28,21 @@ class BaseModel:
                 if key != "__class__":
                     setattr(self, key, value)
         else:
-            self.id = str(uuid.uuid4()) #creating a unique id
-            self.created_at = datetime.now() #creating current time when an instance is created
-            self.updated_at = datetime.now() #creating current time when an instance is updated
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
             models.storage.new(self)
-    
+
     def __str__(self):
         """" Print string method """
         class_name = self.__class__.__name__
         return "[{}] ({}) {}".format(class_name, self.id, self.__dict__)
-    
+
     def save(self):
         """Makes update with the current datetime"""
         self.updated_at = datetime.now()
         models.storage.save()
-    
+
     def to_dict(self):
         """This returns a dict with all the keys and values of the instance"""
         new_dict = self.__dict__.copy()
