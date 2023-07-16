@@ -21,49 +21,47 @@ class TestConsole(unittest.TestCase):
         result = style.check_files(["console.py"])
         self.assertEqual(result.total_errors, 0)
 
-    def test_simple(self):
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_simple(self, mock_stdout):
         """Test simple"""
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("help")
-            self.assertEqual(f.getvalue(), """\
+        console.HBNBCommand().onecmd("help")
+        expected_output = """\
 Documented commands (type help <topic>):
 ========================================
 EOF  help  quit
 
-""")
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("help quit")
-            self.assertEqual(f.getvalue(), "Quit command to exit the program\n")
+"""
+        self.assertEqual(mock_stdout.getvalue(), expected_output)
 
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("help EOF")
-            self.assertEqual(f.getvalue(), "Exit the program with EOF (Ctrl+D)\n")
+        console.HBNBCommand().onecmd("help quit")
+        expected_output = "Quit command to exit the program\n"
+        self.assertEqual(mock_stdout.getvalue(), expected_output)
 
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("help help")
-            self.assertEqual(f.getvalue(),
-                             "List available commands with "
-                             "\"help\" or detailed help with \"help cmd\".\n")
+        console.HBNBCommand().onecmd("help EOF")
+        expected_output = "Exit the program with EOF (Ctrl+D)\n"
+        self.assertEqual(mock_stdout.getvalue(), expected_output)
 
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("")
-            self.assertEqual(f.getvalue(), "\n")
+        console.HBNBCommand().onecmd("help help")
+        expected_output = (
+            "List available commands with \"help\" or detailed help with \"help cmd\".\n"
+        )
+        self.assertEqual(mock_stdout.getvalue(), expected_output)
 
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd(" ")
-            self.assertEqual(f.getvalue(), "\n")
+        console.HBNBCommand().onecmd("")
+        self.assertEqual(mock_stdout.getvalue(), "\n")
 
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("quit")
-            self.assertEqual(f.getvalue(), "")
+        console.HBNBCommand().onecmd(" ")
+        self.assertEqual(mock_stdout.getvalue(), "\n")
 
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("EOF")
-            self.assertEqual(f.getvalue(), "")
+        console.HBNBCommand().onecmd("quit")
+        self.assertEqual(mock_stdout.getvalue(), "")
 
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("\n")
-            self.assertEqual(f.getvalue(), "\n")
+        console.HBNBCommand().onecmd("EOF")
+        self.assertEqual(mock_stdout.getvalue(), "")
+
+        console.HBNBCommand().onecmd("\n")
+        self.assertEqual(mock_stdout.getvalue(), "\n")
+
 
 if __name__ == '__main__':
     unittest.main()
