@@ -1,10 +1,13 @@
 #!/usr/bin/python3
 """Defines unittests for models/user.py."""
+
 import unittest
-from models.user import User
-from models.base_model import BaseModel
 from datetime import datetime
 import os
+from time import sleep
+
+from models.user import User
+import models
 
 
 class TestUserInstantiation(unittest.TestCase):
@@ -124,13 +127,13 @@ class TestUserSave(unittest.TestCase):
     """Test cases for User save method."""
 
     @classmethod
-    def setUp(self):
+    def setUpClass(cls):
         try:
             os.rename("file.json", "tmp")
         except IOError:
             pass
 
-    def tearDown(self):
+    def tearDownClass(cls):
         try:
             os.remove("file.json")
         except IOError:
@@ -234,13 +237,13 @@ class TestUserCreate(unittest.TestCase):
     """Test cases for User create method."""
 
     @classmethod
-    def setUp(self):
+    def setUpClass(cls):
         try:
             os.rename("file.json", "tmp")
         except IOError:
             pass
 
-    def tearDown(self):
+    def tearDownClass(cls):
         try:
             os.remove("file.json")
         except IOError:
@@ -315,13 +318,13 @@ class TestUserDestroy(unittest.TestCase):
     """Test cases for User destroy method."""
 
     @classmethod
-    def setUp(self):
+    def setUpClass(cls):
         try:
             os.rename("file.json", "tmp")
         except IOError:
             pass
 
-    def tearDown(self):
+    def tearDownClass(cls):
         try:
             os.remove("file.json")
         except IOError:
@@ -378,13 +381,13 @@ class TestUserUpdate(unittest.TestCase):
     """Test cases for User update method."""
 
     @classmethod
-    def setUp(self):
+    def setUpClass(cls):
         try:
             os.rename("file.json", "tmp")
         except IOError:
             pass
 
-    def tearDown(self):
+    def tearDownClass(cls):
         try:
             os.remove("file.json")
         except IOError:
@@ -436,13 +439,13 @@ class TestUserAll(unittest.TestCase):
     """Test cases for User all method."""
 
     @classmethod
-    def setUp(self):
+    def setUpClass(cls):
         try:
             os.rename("file.json", "tmp")
         except IOError:
             pass
 
-    def tearDown(self):
+    def tearDownClass(cls):
         try:
             os.remove("file.json")
         except IOError:
@@ -474,13 +477,13 @@ class TestUserShow(unittest.TestCase):
     """Test cases for User show method."""
 
     @classmethod
-    def setUp(self):
+    def setUpClass(cls):
         try:
             os.rename("file.json", "tmp")
         except IOError:
             pass
 
-    def tearDown(self):
+    def tearDownClass(cls):
         try:
             os.remove("file.json")
         except IOError:
@@ -541,13 +544,13 @@ class TestUserUpdateCommand(unittest.TestCase):
     """Test cases for User update command."""
 
     @classmethod
-    def setUp(self):
+    def setUpClass(cls):
         try:
             os.rename("file.json", "tmp")
         except IOError:
             pass
 
-    def tearDown(self):
+    def tearDownClass(cls):
         try:
             os.remove("file.json")
         except IOError:
