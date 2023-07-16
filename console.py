@@ -93,7 +93,7 @@ class HBNBCommand(cmd.Cmd):
         if not arg:
             print("** class name missing **")
         else:
-            args = arg.split()
+            args = arg.split(",")
             if args[0] not in self.classes:
                 print("** class doesn't exist **")
             elif len(args) < 2:
@@ -108,7 +108,7 @@ class HBNBCommand(cmd.Cmd):
                     print("** value missing **")
                 else:
                     obj = storage.all()[key]
-                    setattr(obj, args[2], args[3])
+                    setattr(obj, args[2].strip(), args[3].strip())
                     obj.save()
 
     def do_count(self, arg):
