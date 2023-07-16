@@ -1,43 +1,24 @@
 #!/usr/bin/python3
-"""Defines the BaseModel class.
-
-This module provides the BaseModel class, which serves as the base class for
-other classes in the project. It defines common instance attributes and methods.
-
-Attributes:
-    id (str): A UUID assigned to each instance upon creation.
-    created_at (datetime): The datetime when an instance is created.
-    updated_at (datetime): The datetime when an instance is updated.
-
-Methods:
-    __init__(self, *args, **kwargs): Initializes a new instance of the class.
-    __str__(self): Returns a string representation of the instance.
-    save(self): Updates the instance's updated_at attribute and saves the changes.
-    to_dict(self): Returns a dictionary representation of the instance.
-
+""" Base model
+    It has the following instance attributes
+    - id: Assign a uuid when an instance is created
+    - created_at: Assign the current datetime when an instance is created
+    - updated_at: Assign the current datetime everytime and object is updated
 """
-
 import uuid
 import models
 from datetime import datetime
 
-
 class BaseModel:
-    """The BaseModel class serves as the base class for other classes.
-
-    It defines common instance attributes and methods.
-
-    """
+    """Defines all common attributes/methods for other class"""
 
     def __init__(self, *args, **kwargs):
-        """Initializes a new instance of the class.
-
-        Args:
-            *args: Unused positional arguments.
-            **kwargs: A dictionary of arguments and values for instantiation.
-
-        """
+        """Class constructor"""
         if kwargs:
+            """ kwargs = self.__dict__
+                created_at and updated_at are stings in the dictionary
+                datetime: used to convert these strings into datetime object
+            """
             for key, value in kwargs.items():
                 if key == "created_at":
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
@@ -46,33 +27,23 @@ class BaseModel:
                 if key != "__class__":
                     setattr(self, key, value)
         else:
-            self.id = str(uuid.uuid4())  # Creating a unique id
-            self.created_at = datetime.now()  # Creating current time when an instance is created
-            self.updated_at = datetime.now()  # Creating current time when an instance is updated
+            self.id = str(uuid.uuid4()) #creating a unique id
+            self.created_at = datetime.now() #creating current time when an instance is created
+            self.updated_at = datetime.now() #creating current time when an instance is updated
             models.storage.new(self)
-
+    
     def __str__(self):
-        """Returns a string representation of the instance.
-
-        Returns:
-            str: A string representation of the instance.
-
-        """
+        """" Print string method """
         class_name = self.__class__.__name__
         return "[{}] ({}) {}".format(class_name, self.id, self.__dict__)
-
+    
     def save(self):
-        """Updates the instance's updated_at attribute and saves the changes."""
+        """Makes update with the current datetime"""
         self.updated_at = datetime.now()
         models.storage.save()
-
+    
     def to_dict(self):
-        """Returns a dictionary representation of the instance.
-
-        Returns:
-            dict: A dictionary containing all keys and values of the instance.
-
-        """
+        """This returns a dict with all the keys and values of the instance"""
         new_dict = self.__dict__.copy()
         new_dict["created_at"] = self.created_at.isoformat()
         new_dict["updated_at"] = self.updated_at.isoformat()
